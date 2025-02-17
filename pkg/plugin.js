@@ -29,6 +29,8 @@
           type: 'line',
           events: {}
         },
+        tooltip: {},
+        toolbar: {},
         series: [],
         noData: {
           text: 'Loading...'
@@ -38,7 +40,7 @@
         yaxis: [{
           labels: {
             formatter: function (value) {
-              return value.toFixed(2) + that.yUnit;
+              return Number(value).toFixed(2) + that.yUnit;
               //return Math.round((value + Number.EPSILON) * 100) / 100;
             }
           }
@@ -65,6 +67,14 @@
           this.cfg.colors = rec.colors;
           if (typeof this.cfg.fill == 'undefined') this.cfg.fill = {};
           this.cfg.fill.colors = rec.colors;
+          optionsChanged = true;
+        };
+        if (typeof rec.foreColor == 'string') {
+          this.cfg.chart.foreColor = rec.foreColor;
+          optionsChanged = true;
+        };
+        if (typeof rec.tooltipTheme == 'string') {
+          this.cfg.tooltip.theme = rec.tooltipTheme;
           optionsChanged = true;
         };
         if (typeof rec.options == 'object') {
@@ -132,6 +142,7 @@
       },
 
       this.init=function() {
+        //console.log('APEX');
         this.available = {
           'line':{},
           'area':{},
@@ -194,6 +205,8 @@
           //console.log(event.layerX+' '+event.layerY);
           //console.log(event);
         }
+        
+        //this.cfg.chart.foreColor = '#ffffff';
 
         this.chart = new ApexCharts(that.element, this.cfg);
         this.chart.render();

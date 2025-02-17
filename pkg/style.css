@@ -1,4 +1,8 @@
 
-.waxed-boilerplate {
+.waxed-apexcharts.dark .apexcharts-toolbar .apexcharts-menu {
+  color:#000000 !important;
+}
 
+.apexcharts-tooltip {
+  /*color:#000000 !important;*/
 }

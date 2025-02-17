@@ -2,11 +2,15 @@
 return [
 'payload1' =>
   [
+    'foreColor' => '#cecece',
+    'tooltipTheme' => 'dark',
     'series' => [44, 55, 41, 17, 15],
     'labels' => ['alpha','beta','gamma','delta','omega'],
     //'colors' => ['lime','green','yellow','blue','orange'],
   ],
 'payload2' => [
+  'foreColor' => '#cecece',
+  'tooltipTheme' => 'dark',
   'series' => [[
     'data' => [[
         'x' => 'category A',
@@ -26,6 +30,8 @@ return [
     ]
   ],
   'payload3' => [
+  'foreColor' => '#cecece',
+  'tooltipTheme' => 'dark',
   'series' => [[
     'data' => [[
         'x' => 'category A',
@@ -45,6 +51,8 @@ return [
     ]
   ],
   'payload4' => [
+    'foreColor' => '#cecece',
+    'tooltipTheme' => 'dark',
     'series' => [[
       'type' => 'line',
       'name' => 'alpha',

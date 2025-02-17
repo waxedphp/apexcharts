@@ -1,7 +1,7 @@
 <?php
 namespace Waxedphp\Apexcharts;
 
-use \Waxedphp\Waxedphp\Setters\AbstractSetter;
+use \Waxedphp\Waxedphp\Php\Setters\AbstractSetter;
 
 class Setter extends AbstractSetter {
 

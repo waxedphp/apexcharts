@@ -1,7 +1,8 @@
 {
     "name": "waxedphp/apexcharts",
-    "description": "Advanced views with mustache.",
+    "description": "Modern & Interactive Open-source Charts - within WaxedPHP environment.",
     "type": "library",
+    "version": "0.2.7",
     "license": "MIT",
     "autoload": {
         "psr-4": {
@@ -14,6 +15,6 @@
         }
     ],
     "require": {
-      "waxedphp/waxedphp":"^0.2.6"
+      "waxedphp/waxedphp":"^0.2.7"
     }
 }
