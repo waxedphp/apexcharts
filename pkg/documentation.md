@@ -1,26 +1,15 @@
 # Apexcharts
 
-MIT license
+Modern & Interactive Open-source Charts.
 
 [https://apexcharts.com](https://apexcharts.com)
 
+MIT license
 
-### HTML:
-
-```
-
-<div class="waxed-apexcharts"
-data-name="payload1"
-data-type="donut"
-style="width:600px;"
-></div>
-
-
-```
-
+---
 ### PHP:
 
-```
+```php
 
 $this->waxed->display([
   'payload' =>
@@ -31,5 +20,18 @@ $this->waxed->display([
 
 
 ```
+---
+### HTML:
+
+```html
+
+<div class="waxed-apexcharts"
+data-name="payload1"
+data-type="donut"
+style="width:600px;"
+></div>
 
 
+```
+---
+---

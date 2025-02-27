@@ -65,7 +65,7 @@ class Setter extends AbstractSetter {
   * @param mixed $value
   * @return array<mixed>
   */
-  public function value(mixed $value): array {
+  public function value(mixed $value = null): array {
     $a = $this->getArrayOfAllowedOptions();
 
     if ($value) {
