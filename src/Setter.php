@@ -13,7 +13,13 @@ class Setter extends AbstractSetter {
   protected ?string $yUnit = null;
   protected ?string $label = null;
   protected ?string $luxonX = null;
+  protected ?string $momentX = null;
+  protected ?string $formatY = null;
   protected ?string $locale = null;
+  
+  
+  public php\ConfigChart $chart;
+  public php\ConfigMarkers $markers;
 
   protected array $timeSeries = [];
 
@@ -23,8 +29,20 @@ class Setter extends AbstractSetter {
    * @var array<mixed> $_allowedOptions
    */
   protected array $_allowedOptions = [
-    'xUnit', 'yUnit', 'label', 'luxonX', 'locale'
+    'xUnit', 'yUnit', 'label', 'luxonX', 'momentX', 'formatY', 'locale'
   ];
+  
+  /**
+  * constructor
+  *
+  * @param \JasterStary\Waxed\Php\Base $base
+  */
+  public function __construct(\Waxedphp\Waxedphp\Php\Base $base){
+    $this->base = &$base;
+    $this->chart = new php\ConfigChart($this->base);
+    $this->markers = new php\ConfigMarkers($this->base);
+    $this->stroke = new php\ConfigStroke($this->base);
+  }
 
   public function setTimeMetricType(string $name, string $type): Setter {
     if (!in_array($type, ['column', 'line'])) throw new \Exception('Not supported type.');
@@ -75,6 +93,7 @@ class Setter extends AbstractSetter {
     } else {
       $a['TimeSeries'] = $this->getTimeSeries();
     }
+    $a['tooltipTheme'] = 'dark';
     $a['config'] = [
       'xaxis' => [
         'type' => 'datetime',
@@ -85,6 +104,18 @@ class Setter extends AbstractSetter {
         //'colors' => [ '#E8D824', '#66DA26', '#546E7A', '#E91E63', '#FF9800']
       ],
     ];
+    $b = $this->chart->value();
+    if (!empty($b)) {
+      $a['config']['chart'] = $b;
+    };
+    $b = $this->markers->value();
+    if (!empty($b)) {
+      $a['config']['markers'] = $b;
+    };
+    $b = $this->stroke->value();
+    if (!empty($b)) {
+      $a['config']['stroke'] = $b;
+    };
     return $a;
   }
 

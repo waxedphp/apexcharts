@@ -3,7 +3,8 @@
 return [
   'js' => [
     NODE . '/apexcharts/dist/apexcharts.js',
-    NODE . '/luxon/build/global/luxon.js',
+    //NODE . '/luxon/build/global/luxon.js',
+    NODE . '/moment/moment.js',
     //'/apexcharts/luxon-build/main.js',
     $PATH . '/plugin.js',
   ],
