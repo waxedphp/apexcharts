@@ -1,4 +1,5 @@
 
+import moment from 'moment';
 const { DateTime } = require("luxon");
 window.DateTime = DateTime;
 import ApexCharts from 'apexcharts';
