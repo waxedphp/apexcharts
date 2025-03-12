@@ -14,14 +14,21 @@ class Setter extends AbstractSetter {
   protected ?string $label = null;
   protected ?string $luxonX = null;
   protected ?string $momentX = null;
+  protected ?string $formatX = null;
   protected ?string $formatY = null;
+  protected ?string $format = null;
   protected ?string $locale = null;
+  
+  protected string $tooltipTheme = 'dark';
   
   
   public php\ConfigChart $chart;
   public php\ConfigMarkers $markers;
+  public php\ConfigStroke $stroke;
 
   protected array $timeSeries = [];
+  protected array $datasets = [];
+  protected array $labels = [];
 
   /**
    * allowed options
@@ -29,7 +36,7 @@ class Setter extends AbstractSetter {
    * @var array<mixed> $_allowedOptions
    */
   protected array $_allowedOptions = [
-    'xUnit', 'yUnit', 'label', 'luxonX', 'momentX', 'formatY', 'locale'
+    'xUnit', 'yUnit', 'label', 'luxonX', 'momentX', 'formatX', 'formatY', 'format', 'locale'
   ];
   
   /**
@@ -42,6 +49,25 @@ class Setter extends AbstractSetter {
     $this->chart = new php\ConfigChart($this->base);
     $this->markers = new php\ConfigMarkers($this->base);
     $this->stroke = new php\ConfigStroke($this->base);
+  }
+
+  function addPieDataset($label,$data, $dd='', $keys=['used','free']) {
+    $data = self::_traverse($data, $dd);
+    if (!is_array($data)) {
+      return false;
+    };
+    $n = count($this->datasets);
+    $this->datasets[$n] = [];
+    $this->labels[$n] = $label;
+    foreach ($data as $key=>$val) {
+      if (in_array($key,$keys)) {
+        if (!isset($this->col[$key])) {
+          $this->col[$key] = $key;
+        };
+        $this->datasets[$n][$key] = $val;
+      };
+    };
+    return $this;
   }
 
   public function setTimeMetricType(string $name, string $type): Setter {
@@ -76,6 +102,11 @@ class Setter extends AbstractSetter {
     }
     return array_values($a);
   }
+  
+  function setTooltipTheme(string $theme) {
+    $this->tooltipTheme = $theme;
+    return $this;
+  }
 
   /**
   * value
@@ -91,9 +122,20 @@ class Setter extends AbstractSetter {
         'data' => $value,
       ]];
     } else {
-      $a['TimeSeries'] = $this->getTimeSeries();
-    }
-    $a['tooltipTheme'] = 'dark';
+      $ts = $this->getTimeSeries();
+      if (!empty($ts)) $a['TimeSeries'] = $ts;
+    };
+    
+    if (!empty($this->datasets)) {
+      $a['series'] = array_values($this->datasets[0]);
+      $a['labels'] = array_keys($this->datasets[0]);
+    };
+    if (!empty($this->labels)) {
+      //$a['labels'] = $this->labels;
+    };
+        
+    $a['tooltipTheme'] = $this->tooltipTheme;
+    
     $a['config'] = [
       'xaxis' => [
         'type' => 'datetime',

@@ -10,13 +10,21 @@
         inited = false
         ;
 
-    const units = ['bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
-    function formatBytes(x){
+    const unitsBinary = ['bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
+    function formatBytesBinary(x){
       let l = 0, n = parseInt(x, 10) || 0;
       while(n >= 1024 && ++l){
           n = n/1024;
       }
-      return(n.toFixed(n < 10 && l > 0 ? 1 : 0) + ' ' + units[l]);
+      return(n.toFixed(n < 10 && l > 0 ? 1 : 0) + ' ' + unitsBinary[l]);
+    }
+    const unitsDecimal = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    function formatBytesDecimal(x){
+      let l = 0, n = parseInt(x, 10) || 0;
+      while(n >= 1024 && ++l){
+          n = n/1024;
+      }
+      return(n.toFixed(n < 10 && l > 0 ? 1 : 0) + ' ' + unitsDecimal[l]);
     }
 
 
@@ -34,6 +42,7 @@
       this.luxonX = 'yyyy LLL';
       this.momentX = 'D.MMM HH:MM';
       this.fmt = {
+        'a': 'percent',
         'x': 'datetime',
         'y': 'amount'
       };
@@ -101,6 +110,10 @@
         };
         if (typeof rec.momentX == 'string') {
           this.momentX = rec.momentX;
+        };
+        if (typeof rec.format == 'string') {
+          this.fmt.a = rec.format;
+          optionsChanged = true;
         };
         if (typeof rec.formatX == 'string') {
           this.fmt.x = rec.formatX;
@@ -181,7 +194,9 @@
       this.format = function(which, val, idx) {
           switch (this.fmt[which]) {
             case 'bytes':
-              return formatBytes(val);
+              return formatBytesDecimal(val);
+            case 'bibytes':
+              return formatBytesBinary(val);
             case 'price':
               return val.toLocaleString('de-DE', { 
                 style: 'currency', 
@@ -346,6 +361,104 @@
         
         if (this.fmt['x'] == 'datetime') this.cfg.xaxis.type = 'datetime';
         if (this.fmt['y'] == 'datetime') this.cfg.yaxis.type = 'datetime';
+        
+        /*
+        this.cfg.dataLabels = {
+          enabled: true,
+          formatter: function (value) {
+            return that.format('a', value, 0);
+          }
+        };
+        */
+        if (typeof this.cfg.plotOptions == 'undefined') this.cfg.plotOptions = {};
+        if (typeof this.cfg.plotOptions.pie == 'undefined') this.cfg.plotOptions.pie = {};
+        this.cfg.plotOptions.pie.donut = {
+        labels: {
+          show: true,
+          name: {
+            show: true,
+            fontSize: '22px',
+            fontFamily: 'Helvetica, Arial, sans-serif',
+            fontWeight: 600,
+            color: undefined,
+            offsetY: -10,
+            formatter: function (val) {
+              //console.log('formatter - name');
+              return val
+            }
+          },
+          value: {
+            show: true,
+            fontSize: '16px',
+            fontFamily: 'Helvetica, Arial, sans-serif',
+            fontWeight: 400,
+            color: undefined,
+            offsetY: 16,
+            formatter: function (value) {
+              //console.log('formatter - value');
+              return that.format('a', value, 0);
+            }
+          },
+          total: {
+            show: true,
+            showAlways: true,
+            label: 'Total',
+            fontSize: '22px',
+            fontFamily: 'Helvetica, Arial, sans-serif',
+            fontWeight: 600,
+            color: '#373d3f',
+            formatter: function (w) {
+              //console.log('formatter - total');
+              return that.format('y', w.globals.seriesTotals.reduce((a, b) => {
+                return a + b
+              }, 0),0);
+            }
+          }
+        }};
+        /*
+        this.cfg.legend = {
+          
+           // @param {string} seriesName - The name of the series corresponding to the legend
+           // @param {object} opts - Contains additional information as below
+           // opts: {
+           //   seriesIndex
+           //   w: {
+           //     config,
+           //     globals  
+           //   },
+           // }
+          
+          formatter: function(seriesName, opts) {
+            console.log('formatter - legend');
+              return [seriesName, " - ", that.format('y', opts.w.globals.series[opts.seriesIndex], 0)]
+          }
+        };
+        */
+        /*
+        this.cfg.tooltip = {
+          x: {
+          formatter: function(val) {
+            console.log('tooltip x', val);
+            return that.format('x', val, 0);
+          },
+          title: 'Size: '
+          },
+          y: {
+          formatter: function(val) {
+            console.log('tooltip y', val);
+            return that.format('y', val, 0);
+          },
+          title: 'Size: '
+          },
+          z: {
+          formatter: function(val) {
+            console.log('tooltip z', val);
+            return that.format('a', val, 0);
+          },
+          title: 'Size: '
+          }
+        };
+        */
         
         
         this.cfg.chart.events.click = function(event, chartContext, config) {
