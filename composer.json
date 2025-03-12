@@ -2,7 +2,7 @@
     "name": "waxedphp/apexcharts",
     "description": "Modern & Interactive Open-source Charts - within WaxedPHP environment.",
     "type": "library",
-    "version": "0.3.8",
+    "version": "0.3.9",
     "license": "MIT",
     "autoload": {
         "psr-4": {
