@@ -82,6 +82,9 @@ $this->waxed->pick('section1')->display([
 
 $apx = new Apexcharts($this->waxed);
 
+$apx->theme->setMode('dark')->setPalette('palette7');
+// settings for theme, see apexcharts documentation
+
 $apx->chart->setHeight('400px');
 // various settings of chart, see apexcharts documentation
 

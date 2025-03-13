@@ -25,6 +25,7 @@ class Setter extends AbstractSetter {
   public php\ConfigChart $chart;
   public php\ConfigMarkers $markers;
   public php\ConfigStroke $stroke;
+  public php\ConfigTheme $theme;
 
   protected array $timeSeries = [];
   protected array $datasets = [];
@@ -49,6 +50,7 @@ class Setter extends AbstractSetter {
     $this->chart = new php\ConfigChart($this->base);
     $this->markers = new php\ConfigMarkers($this->base);
     $this->stroke = new php\ConfigStroke($this->base);
+    $this->theme = new php\ConfigTheme($this->base);
   }
 
   function addPieDataset($label,$data, $dd='', $keys=['used','free']) {
@@ -157,6 +159,10 @@ class Setter extends AbstractSetter {
     $b = $this->stroke->value();
     if (!empty($b)) {
       $a['config']['stroke'] = $b;
+    };
+    $b = $this->theme->value();
+    if (!empty($b)) {
+      $a['config']['theme'] = $b;
     };
     return $a;
   }
